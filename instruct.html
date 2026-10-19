@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gallery-DL Downloader Documentation</title>
+
+<style>
+
+:root{
+    --bg:#121212;
+    --panel:#1e1e1e;
+    --panel2:#252526;
+    --accent:#0078d4;
+    --border:#333;
+    --text:#fff;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Segoe UI,sans-serif;
+}
+
+.wrapper{
+    display:flex;
+    width:100%;
+    height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:280px;
+    background:var(--panel);
+    border-right:1px solid var(--border);
+    transition:all .3s ease;
+    overflow:hidden;
+    flex-shrink:0;
+}
+
+.sidebar.collapsed{
+    width:60px;
+}
+
+.sidebar-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    height:60px;
+    padding:0 15px;
+    border-bottom:1px solid var(--border);
+}
+
+.sidebar.collapsed .title{
+    display:none;
+}
+
+.toggle{
+    border:none;
+    background:var(--accent);
+    color:white;
+    cursor:pointer;
+    padding:6px 10px;
+    border-radius:6px;
+}
+
+.nav{
+    padding-top:20px;
+}
+
+.nav a{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    color:white;
+    text-decoration:none;
+    padding:14px 20px;
+    transition:.2s;
+}
+
+.nav a:hover{
+    background:var(--accent);
+}
+
+.icon{
+    width:24px;
+    text-align:center;
+    font-size:18px;
+}
+
+.sidebar.collapsed .label{
+    display:none;
+}
+
+/* MAIN CONTENT */
+
+.content{
+    flex:1;
+    overflow-y:auto;
+    padding:30px;
+}
+
+.section{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:25px;
+}
+
+.section h2{
+    margin-bottom:15px;
+}
+
+.section p,
+.section li{
+    line-height:1.6;
+}
+
+ul{
+    margin-left:20px;
+}
+
+pre{
+    margin-top:15px;
+    background:var(--panel2);
+    border:1px solid #444;
+    border-radius:8px;
+    padding:15px;
+    overflow:auto;
+    color:#89d185;
+}
+
+.copy-btn{
+    background:var(--accent);
+    color:white;
+    border:none;
+    cursor:pointer;
+    padding:8px 16px;
+    border-radius:6px;
+    margin-bottom:10px;
+}
+
+.copy-btn:hover{
+    opacity:.9;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    background:#0078d4;
+    color:white;
+    padding:12px 18px;
+    border-radius:6px;
+    transform:translateY(100px);
+    transition:.3s;
+}
+
+.toast.show{
+    transform:translateY(0);
+}
+
+@media(max-width:768px){
+
+    .wrapper{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        height:auto;
+    }
+
+    .sidebar.collapsed{
+        width:100%;
+    }
+
+    .content{
+        padding:15px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+            <span class="title">Documentation</span>
+
+            <button class="toggle"
+                    onclick="toggleSidebar()">
+                ☰
+            </button>
+        </div>
+
+        <div class="nav">
+            <div>
+            <a href="#design" class="nav-link">
+                <span class="icon">🏗</span>
+                <span class="label">System Design</span></a>
+            </div>
+
+            <div>
+            <a href="#requirements"  class="nav-link">
+                <span class="icon">📋</span>
+                <span class="label">Requirements</span></a>
+                </div>
+
+                            <div>
+            <a href="#config" class="nav-link">
+                <span class="icon">💻</span>
+                <span class="label">Configuration</span></a>
+        </div>
+
+                                    <div>
+            <a href="#logger" class="nav-link">
+                <span class="icon">💻</span>
+                <span class="label">Logger</span></a>
+        </div>
+
+                <div>
+            <a href="#code" class="nav-link">
+                <span class="icon">💻</span>
+                <span class="label">Code</span></a>
+        </div>
+      
+        <div>
+           <a href="#readme" class="nav-link">
+                <span class="icon">📚</span>
+                <span class="label">README</span></a>
+        </div>
+        </div>
+
+    </aside>
+
+    <main class="content">
+
+        <section id="design" class="section">
+
+            <h2>System Design</h2>
+
+            <p>
+                Single downloader engine that can operate
+                as a GUI, CLI or External Application.
+            </p>
+
+<pre>
+User
+ │
+ ▼
+downloader.py
+ │
+ ├── GUI Mode
+ ├── CLI Mode
+ └── External Mode
+      │
+      ▼
+  Gallery-DL
+      │
+      ▼
+ Browser Cookies
+      │
+      ▼
+   Downloads
+</pre>
+
+        </section>
+
+        <section id="requirements" class="section">
+
+            <h2>Requirements</h2>
+
+            <ul>
+                <li>Python 3.10+</li>
+                <li>gallery-dl</li>
+                <li>Tkinter</li>
+                <li>Firefox / Edge / Chrome</li>
+                <li>Windows or Linux</li>
+            </ul>
+
+        </section>
+
+ <section id="config" class="section">
+
+            <h2>Config</h2>
+
+            <button class="copy-btn"
+                onclick="copyContent('configBlock')">
+                Copy Config
+            </button>
+
+<pre id="configBlock">
+# Browser used for gallery-dl cookies
+COOKIE_BROWSER = "firefox"
+
+# Gallery-dl executable
+GALLERY_DL = "gallery-dl"
+
+# Log file
+LOG_FILE = "downloader.log"
+</pre>
+
+        </section>
+
+
+ <section id="logger" class="section">
+
+            <h2>Logger</h2>
+
+            <button class="copy-btn"
+                onclick="copyContent('loggerBlock')">
+                Copy Logger
+            </button>
+
+<pre id="loggerBlock">
+import logging
+from pathlib import Path
+
+
+class AppLogger:
+    def __init__(self, log_file="app.log"):
+        Path(log_file).touch(exist_ok=True)
+
+        self.logger = logging.getLogger("GalleryDL")
+        self.logger.setLevel(logging.INFO)
+
+        if not self.logger.handlers:
+            formatter = logging.Formatter(
+                "%(asctime)s | %(levelname)s | %(message)s"
+            )
+
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setFormatter(formatter)
+
+            console_handler = logging.StreamHandler()
+            console_handler.setFormatter(formatter)
+
+            self.logger.addHandler(file_handler)
+            self.logger.addHandler(console_handler)
+
+    def info(self, msg):
+        self.logger.info(msg)
+
+    def error(self, msg):
+        self.logger.error(msg)
+
+    def warning(self, msg):
+        self.logger.warning(msg)
+</pre>
+
+        </section>
+
+
+        <section id="code" class="section">
+
+            <h2>Code</h2>
+
+            <button class="copy-btn"
+                onclick="copyContent('codeBlock')">
+                Copy Code
+            </button>
+
+<pre id="codeBlock">
+import argparse
+import subprocess
+import tkinter as tk
+from tkinter import ttk
+from tkinter.scrolledtext import ScrolledText
+import threading
+import config
+print(dir(config))
+from config import COOKIE_BROWSER, GALLERY_DL, LOG_FILE
+from logger_util import AppLogger
+
+
+logger = AppLogger(LOG_FILE)
+
+
+def build_gallery_dl_command(url):
+    return [
+        GALLERY_DL,
+        "--cookies-from-browser",
+        COOKIE_BROWSER,
+        url,
+    ]
+
+
+def download_url(url, output_callback=None):
+    cmd = build_gallery_dl_command(url)
+
+    logger.info(f"Downloading: {url}")
+
+    if output_callback:
+        output_callback(f"Running: {' '.join(cmd)}\n")
+
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+    )
+
+    for line in process.stdout:
+        logger.info(line.rstrip())
+
+        if output_callback:
+            output_callback(line)
+
+    process.wait()
+
+    logger.info(f"Finished: {url}")
+
+
+def run_downloads(urls, output_callback=None):
+    for url in urls:
+        if url.strip():
+            download_url(url.strip(), output_callback)
+
+
+def load_urls_file(path):
+    with open(path, "r", encoding="utf-8") as f:
+        return [
+            line.strip()
+            for line in f.readlines()
+            if line.strip()
+        ]
+
+
+class DownloadGUI:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("Gallery-DL Downloader")
+        self.root.geometry("900x600")
+
+        self.urls = ScrolledText(self.root, height=10)
+        self.urls.pack(fill="x", padx=10, pady=10)
+
+        self.button = ttk.Button(
+            self.root,
+            text="Start Download",
+            command=self.start_download
+        )
+        self.button.pack(pady=5)
+
+        self.log_text = ScrolledText(self.root)
+        self.log_text.pack(fill="both", expand=True, padx=10, pady=10)
+
+    def append_log(self, text):
+        self.log_text.insert("end", text)
+        self.log_text.see("end")
+
+    def start_download(self):
+        urls = self.urls.get("1.0", "end").splitlines()
+
+        thread = threading.Thread(
+            target=run_downloads,
+            args=(urls, self.append_log),
+            daemon=True
+        )
+        thread.start()
+
+    def run(self):
+        self.root.mainloop()
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "urls",
+        nargs="*",
+        help="URLs to download"
+    )
+
+    parser.add_argument(
+        "--url-file",
+        help="Text file containing URLs"
+    )
+
+    parser.add_argument(
+        "--externalapp",
+        action="store_true",
+        help="Run without prompts/UI"
+    )
+
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+
+    urls = []
+
+    if args.urls:
+        urls.extend(args.urls)
+
+    if args.url_file:
+        urls.extend(load_urls_file(args.url_file))
+
+    if args.externalapp:
+        logger.info("External App Mode Enabled")
+        run_downloads(urls)
+        return
+
+    if urls:
+        run_downloads(urls)
+        return
+
+    gui = DownloadGUI()
+    gui.run()
+
+
+if __name__ == "__main__":
+    main()
+</pre>
+
+        </section>
+
+        <section id="readme" class="section">
+
+            <h2>README.md</h2>
+
+            <button class="copy-btn"
+                onclick="copyContent('readmeBlock')">
+                Copy README
+            </button>
+
+<pre id="readmeBlock">
+# Gallery-DL Downloader
+
+## Features
+
+- GUI Mode
+- CLI Mode
+- URL File Support
+- Browser Cookies
+- External App Mode
+- Logging
+
+## Usage
+
+python downloader.py
+
+python downloader.py URL
+
+python downloader.py --url-file urls.txt
+
+python downloader.py --externalapp --url-file jobs.txt
+
+## Files
+
+config.py
+logger_util.py
+downloader.py
+</pre>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div id="toast" class="toast">
+    Copied to Clipboard
+</div>
+
+<script>
+
+function toggleSidebar(){
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    sidebar.classList.toggle("collapsed");
+
+    localStorage.setItem(
+        "docs-sidebar",
+        sidebar.classList.contains("collapsed")
+    );
+}
+
+window.onload = () => {
+
+    const collapsed =
+        localStorage.getItem("docs-sidebar");
+
+    if(collapsed === "true"){
+
+        document
+            .getElementById("sidebar")
+            .classList.add("collapsed");
+    }
+};
+
+function copyContent(id){
+
+    const text =
+        document.getElementById(id).innerText;
+
+    navigator.clipboard.writeText(text);
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2000);
+}
+
+</script>
+
+</body>
+</html>
