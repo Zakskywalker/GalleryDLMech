@@ -1,5 +1,27 @@
 # Gallery-DL Downloader
 
+ ## System Design
+Single downloader engine that can operate as a GUI, CLI or External Application.
+
+User
+ │
+ ▼
+downloader.py
+ │
+ ├── GUI Mode
+ ├── CLI Mode
+ └── External Mode
+      │
+      ▼
+  Gallery-DL
+      │
+      ▼
+ Browser Cookies
+      │
+      ▼
+   Downloads
+
+
 ## Features
 
 - GUI Mode
